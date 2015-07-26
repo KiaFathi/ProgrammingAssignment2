@@ -10,7 +10,7 @@ makeCacheMatrix <- function(x = matrix()) {
   ## 2. get the value of the matrix
   ## 3. set the value of the inverse matrix
   ## 4. get the value of the inverse matrix
-  inverse <- NULL 
+  inverse <<- NULL 
   set <- function(mat){
     x <<- mat
     inverse <<- NULL
@@ -30,9 +30,26 @@ makeCacheMatrix <- function(x = matrix()) {
 
 
 ## This function computes the inverse of the special matrix returned by 
-## cacheMatric above. If the inverse has already been calculated, then 
+## makeCacheMatrix above. If the inverse has already been calculated, then 
 ## cacheSolve should retrieve the inverfse from the cache.
 
 cacheSolve <- function(x, ...) {
   ## Return a matrix that is the inverse of 'x'
+
+  ## Get cached value from x
+  solution <- x$getinverse()
+
+  ## If solution has already been cached for given x, return that solution
+  if (!is.null(solution)){
+    return(solution)
+  }
+
+  ## If no solution has been calculated, solve for solution
+  solution = solve(x$get(), ...)
+
+  ## Cache solution
+  x$setinverse(solution)
+
+  ## Return solution after caching
+  return(solution)
 }
